@@ -15,7 +15,7 @@ if(ARGV[0] == "-a")
         end 
     end
 else
-    log_files[ARGV[0]] = ARGV[0]
+    log_files[ARGV[0]] = ARGV[1]
 end
 puts "#{log_files}"
 
