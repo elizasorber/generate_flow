@@ -11,8 +11,9 @@ ruby:
 HOW TO USE:
 generate_flow.rb:
     This is a ruby script that will take in a PVFS log file and generate a flow chart for that log file. It is an executable ruby script, so user must run chmod before being able to run in the following way. There are two different modes to run the script as follows:
-    manual (default) - ./generate_flow.rb inputlogfile.log results_dir/
-    automatic (-a) - ./generate_flow.rb log_inputs.txt
+    manual (default) - ./generate_flow inputlogfile.log results_dir/
+        ./generate_flow -m inputlogfile.log results_dir/
+    automatic (-a) - ./generate_flow -a log_inputs.txt
 
     Manual mode takes in one log file and creates the simplified log file (a log file that only contains the Entering & Exiting sm lines), a dot file for the state machine flow, and the svg file of the completed flow chart and places them in the results directory. The simplified log file will always be named <inputfilename>flow.txt. The dot file will be named <inputfilename>.dot and the svg will be named <inputfilename>.svg. 
 

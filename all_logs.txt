@@ -1,4 +1,4 @@
-    /home/eliza/tdir-nexteliza/client.log client/
-    /home/eliza/tdir-nexteliza/storage0/server.log server0/
-    /home/eliza/tdir-nexteliza/storage1/server.log server1/
-    /home/eliza/tdir-nexteliza/storage2/server.log server2/
+/home/eliza/tdir-nexteliza/client.log client/
+/home/eliza/tdir-nexteliza/storage0/server.log server0/
+/home/eliza/tdir-nexteliza/storage1/server.log server1/
+/home/eliza/tdir-nexteliza/storage2/server.log server2/
