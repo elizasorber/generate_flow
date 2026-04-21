@@ -45,15 +45,21 @@ ruby -v
 
 ## Usage Instructions
 1. clone git repo -
-	git clone \<repo-url\>
-	cd \<repo-name\>
+	```bash
+    git clone \<repo-url\>
+    cd \<repo-name\>
+    ```
 3. make script executable -
+    ```bash
 	chmod +x generate_flow
+    ```
 4. basic usage -
+    ```bash
 	./generate_flow [options] [args]
+    ```
 
 
-generate_flow:
+### generate_flow:
 This is a ruby script that will take in a PVFS log file and generate a flow chart for that log file. It is an executable ruby script, so user must run chmod before being able to run in the following way. There are two different modes to run the script as follows:
 
 	manual (-m) (default) - ./generate_flow inputlogfile.log results_dir/
@@ -84,7 +90,7 @@ and does the same thing as manual for every entry in the text file. This exists 
 generate_flow uses a ruby logger that creates a file called generate_flow.log. Debug statements, warnings, and errors are logged in this file.
 
 
-logflow.rb:
+### logflow.rb:
 
 This is a ruby script that takes in a simplified log file and generates a dot file for that log file. This script is called by generate_flow.rb.
 
