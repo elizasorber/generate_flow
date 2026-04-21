@@ -1,0 +1,119 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'open3'
+require_relative 'logflow'
+require 'pathname'
+require 'logger'
+
+#set up file logging
+logger = Logger.new(File.open('generate_flow.log', 'w'))
+logger.debug("Begin logging...")
+
+#Using optparse for command line arguments
+LOG_FILES = {}
+Options = Struct.new(:mode, :input, :output)
+class Parser
+  def self.parse(options)
+    args = Options.new(:manual, nil, nil)
+
+    opt_parser = OptionParser.new do |opts|
+        opts.banner = "Usage: generate_flow [options] input output"
+
+        opts.on("-a FILE", "--automatic FILE", "Automatic mode: ./generate_flow -a log_inputs.txt") do |logs|
+            args.mode = :automatic
+            args.input = logs
+            File.readlines(logs).each do |line|
+                split = line.chomp.split(' ')
+                dirname = split[1]
+                dirname = Pathname.new(dirname).cleanpath.to_s
+                dirname << "/"
+                LOG_FILES[split[0]] = dirname
+            end
+        end
+
+        opts.on("-m", "--manual", "Manual mode: ./generate_flow inputlogfile.log results_dir/") do
+            args.mode = :manual
+        end
+
+        opts.on("-h", "--help", "Prints this help") do
+            puts opts
+            exit
+        end
+    end
+
+    if(ARGV.empty?)
+        puts opt_parser.help
+        exit
+    end
+
+    opt_parser.parse!(options)
+    #default to manual mode
+    if (args.mode == :manual && args.input.nil?)
+        args.input  = options[0]
+        dirname = options[1]
+        dirname = Pathname.new(dirname).cleanpath.to_s
+        dirname << "/"
+        args.output = dirname
+        LOG_FILES[args.input] = dirname
+    end
+    return args
+  end
+end
+
+
+
+args = Parser.parse(ARGV)
+logger.debug("Running generate_flow in #{args.mode} mode")
+
+log_files = LOG_FILES
+logger.debug("Log files after opt parse: #{log_files}")
+
+log_files.each do |input, dir|
+    if(File.exist?(input) && Dir.exist?(dir))
+        #generate simplified log file
+        file_name = File.basename(input, ".log")
+        output_file = "#{dir}#{file_name}flow.txt"
+        logger.debug("generated : #{output_file}")
+        File.write(
+            output_file,
+            File.foreach(input)
+                .grep(/\[SM (Entering|Exiting)\]/)
+                .map { _1.sub(/^.*?(?=\[SM)/, "") }
+                .join
+        )
+
+        #generate dot file
+        logger.debug("generating dot file: #{dir}#{file_name}.dot from #{dir}#{file_name}flow.txt")
+        status = logflow("#{dir}#{file_name}flow.txt", "#{dir}#{file_name}.dot")
+        if (status != 0)
+            puts "ERROR: dot file #{dir}#{file_name}.dot could not be constructed"
+            logger.error("ERROR: dot file #{dir}#{file_name}.dot could not be constructed")
+            return
+        end    
+
+        #generate svg file
+        logger.debug("generating svg file: #{dir}#{file_name}.svg from dot #{dir}#{file_name}.dot")
+        pipe_string = "dot #{dir}#{file_name}.dot -Tsvg > #{dir}#{file_name}.svg"
+        logger.debug("pipe_string = #{pipe_string}")
+        stdout, stderr, status = Open3.capture3(pipe_string)
+        if (status.exitstatus != 0)
+            puts "ERROR: flow chart #{dir}#{file_name}.svg could not be constructed"
+            logger.error("ERROR: flow chart #{dir}#{file_name}.svg could not be constructed")
+        end 
+        logger.debug("stdout from #{pipe_string}: #{stdout}")
+        logger.debug("stderr from #{pipe_string}: #{stderr}")
+          
+    else
+        if(File.exists?(input) == false)
+            puts "ERROR: Log file does not exist: #{input}"
+            logger.error("ERROR: Log file does not exist: #{input}")
+        end
+        if(Dir.exists?(dir) == false)
+            puts "ERROR: Results dir does not exist: #{dir}"
+            logger.error("ERROR: Results dir does not exist: #{dir}")
+        end
+    end    
+end
+
+logger.close
