@@ -62,22 +62,21 @@ ruby -v
 ### generate_flow:
 This is a ruby script that will take in a PVFS log file and generate a flow chart for that log file. It is an executable ruby script, so user must run chmod before being able to run in the following way. There are two different modes to run the script as follows:
 
-	manual (-m) (default) - ./generate_flow inputlogfile.log results_dir/
-		./generate_flow -m inputlogfile.log results_dir
-	automatic (-a) - ./generate_flow -a log_inputs.txt
+manual (-m) (default) - `./generate_flow inputlogfile.log results_dir/`
+`./generate_flow -m inputlogfile.log results_dir`
+automatic (-a) - `./generate_flow -a log_inputs.txt`
 
   
 Manual mode takes in one log file and creates the simplified log file (a log file that only contains the Entering & Exiting sm lines), a dot file for the state machine flow, and the svg file of the completed flow chart and places them in the results directory. The simplified log file will always be named <inputfilename>flow.txt. The dot file will be named <inputfilename>.dot and the svg will be named <inputfilename>.svg.
 
   
-Generated files for './generate_flow logs/client.log client/':
-		clientflow.txt # simplified log
-		client.dot # Graphviz source
-		client.svg # generated flow chart
+Generated files for `./generate_flow logs/client.log client/`:
+	* clientflow.txt # simplified log
+	* client.dot # Graphviz source
+	* client.svg # generated flow chart
 
   
 Automatic mode takes in a text file that is formated like the following:
-	inputfile.log results_dir/
 	
 	/home/eliza/tdir-nexteliza/client.log client/
 	/home/eliza/tdir-nexteliza/storage0/server.log server0/
