@@ -46,8 +46,8 @@ ruby -v
 ## Usage Instructions
 1. clone git repo -
 	```bash
-    git clone \<repo-url\>
-    cd \<repo-name\>
+    git clone <repo-url>
+    cd <repo-name>
     ```
 3. make script executable -
     ```bash
@@ -64,6 +64,7 @@ This is a ruby script that will take in a PVFS log file and generate a flow char
 
 manual (-m) (default) - `./generate_flow inputlogfile.log results_dir/`
 `./generate_flow -m inputlogfile.log results_dir`
+
 automatic (-a) - `./generate_flow -a log_inputs.txt`
 
   
