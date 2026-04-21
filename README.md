@@ -1,30 +1,49 @@
 # generate_flow
 
-This repository contains scripts to generate flow charts for PVFS log files using dot.
+This repository contains scripts to generate flow charts for PVFS log files using Graphviz (`dot`).
 
-  
-The main script, generate_flow, parses PVFS log files and produces:
-	a simplified log file
-	a Graphviz .dot file
-	an SVG flow chart
+## Overview
 
-  
+The main script, `generate_flow`, parses PVFS log files and produces:
+
+- a simplified log file
+- a Graphviz `.dot` file
+- an SVG flow chart
+
 This can be run for:
-	a single log file (Manual mode)
-	multiple log files at once (Automatic mode)
 
+- a single log file (**Manual mode**)
+- multiple log files at once (**Automatic mode**)
 
-INSTALLATION INSTRUCTIONS:
-graphviz:
+---
+
+## Installation Instructions
+
+### Graphviz
+
+Install Graphviz:
+
 https://graphviz.org/download/
-Verify installation with: dot -V
 
-ruby:
-!! FIXME !! insert instructions on installing ruby on the remote instance once you figure out how to
-Verify installation with: ruby -v
+Verify installation:
 
+```bash
+dot -V
+```
 
-HOW TO RUN:
+### Ruby
+
+Install Ruby:
+
+https://www.ruby-lang.org/en/documentation/installation/
+
+Verify installation:
+
+```bash
+ruby -v
+```
+
+## Usage Instructions
 1. clone git repo -
 	git clone \<repo-url\>
 	cd \<repo-name\>
@@ -71,7 +90,7 @@ This is a ruby script that takes in a simplified log file and generates a dot fi
 
 This file is where the bulk of the program logic occurs. Occasionally, an PVFS log file is too complex and has too much looping for dot to construct a flow chart for it. There should be an error message handled in generate_flow.rb.
 
-TROUBLESHOOTING:
+## Troubleshooting:
 
 	dot: command not found
 Graphviz is not installed or not in PATH.
