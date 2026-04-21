@@ -71,9 +71,9 @@ Manual mode takes in one log file and creates the simplified log file (a log fil
 
   
 Generated files for `./generate_flow logs/client.log client/`:
-	* clientflow.txt # simplified log
-	* client.dot # Graphviz source
-	* client.svg # generated flow chart
+-  clientflow.txt # simplified log
+-  client.dot # Graphviz source
+-  client.svg # generated flow chart
 
   
 Automatic mode takes in a text file that is formated like the following:
