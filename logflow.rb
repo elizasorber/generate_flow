@@ -126,5 +126,6 @@ def logflow (input_file, output_file)
     end
 
     output.write("}")
+    output.close
     return 0
 end

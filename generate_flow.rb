@@ -3,6 +3,7 @@
 require 'optparse'
 require 'open3'
 require_relative 'logflow'
+require 'pathname'
 
 #Using optparse for command line arguments
 LOG_FILES = {}
@@ -19,7 +20,10 @@ class Parser
             args.input = logs
             File.readlines(logs).each do |line|
                 split = line.chomp.split(' ')
-                LOG_FILES[split[0]] = split[1]
+                dirname = split[1]
+                dirname = Pathname.new(dirname).cleanpath.to_s
+                dirname << "/"
+                LOG_FILES[split[0]] = dirname
             end
         end
 
@@ -37,8 +41,11 @@ class Parser
     #default to manual mode
     if (args.mode == :manual && args.input.nil?)
         args.input  = options[0]
-        args.output = options[1]
-        LOG_FILES[args.input] = args.output
+        dirname = options[1]
+        dirname = Pathname.new(dirname).cleanpath.to_s
+        dirname << "/"
+        args.output = dirname
+        LOG_FILES[args.input] = dirname
     end
     return args
   end
@@ -75,13 +82,13 @@ log_files.each do |input, dir|
         end    
 
         puts "generating svg... "
-        #generate svg file (or try to)
-        #pipe_string = "dot #{dir}#{file_name}.dot -Tsvg > #{dir}#{file_name}.svg"
-        puts dir
-        puts file_name
-        input_name = "client/client.dot"
-        output_name = "client/client.svg"
-        pipe_string = "dot #{input_name} -Tsvg > #{output_name}"
+        #generate svg file
+        pipe_string = "dot #{dir}#{file_name}.dot -Tsvg > #{dir}#{file_name}.svg"
+        #puts dir
+        #puts file_name
+        #input_name = "client/client.dot"
+        #output_name = "client/client.svg"
+        #pipe_string = "dot #{input_name} -Tsvg > #{output_name}"
         #pipe_string = "dot server0/server0.dot -Tsvg > server0/server0.svg"
         #pipe_string = "dot server1/server1.dot -Tsvg > server1/server1.svg"
         #pipe_string = "dot server2/server2.dot -Tsvg > server2/server2.svg"
